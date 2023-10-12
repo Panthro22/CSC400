@@ -38,7 +38,8 @@ public class PostfixConverter {
             !operatorStack.isEmpty() &&
             precedence(nextCharacter) <= precedence(operatorStack.peek())
           ) {
-            postfixString.append(operatorStack.pop());
+            char topOperator = operatorStack.pop();
+            postfixString.append(topOperator);
           }
           operatorStack.push(nextCharacter);
           break;
@@ -46,10 +47,12 @@ public class PostfixConverter {
           operatorStack.push(nextCharacter);
           break;
         case ')':
-          char topOperator = operatorStack.pop();
-          while (topOperator != '(') {
+          while (!operatorStack.isEmpty() && operatorStack.peek() != '(') {
+            char topOperator = operatorStack.pop();
             postfixString.append(topOperator);
-            topOperator = operatorStack.pop();
+          }
+          if (!operatorStack.isEmpty() && operatorStack.peek() == '(') {
+            operatorStack.pop(); // Pop the '('
           }
           break;
         default:
@@ -61,7 +64,8 @@ public class PostfixConverter {
     }
 
     while (!operatorStack.isEmpty()) {
-      postfixString.append(operatorStack.pop());
+      char topOperator = operatorStack.pop();
+      postfixString.append(topOperator);
     }
 
     return postfixString.toString();
