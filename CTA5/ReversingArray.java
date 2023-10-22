@@ -8,6 +8,8 @@ public class ReversingArray {
     int startIndex,
     int endIndex
   ) {
+    // Base case is when startIndex is greater than or equal to endIndex
+    // ending the recursion
     if (startIndex < endIndex) {
       // Swap elements at startIndex and endIndex
       int temp = arr[startIndex];

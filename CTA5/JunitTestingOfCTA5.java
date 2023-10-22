@@ -36,7 +36,8 @@ public class JunitTestingOfCTA5 {
     int[] arr2 = { 9, 7, 5, 3, 1 };
     ReversingArray.reverseArrayPortion(arr2, 0, 4);
     assertArrayEquals(new int[] { 1, 3, 5, 7, 9 }, arr2);
-    // numbers 1-21 in the array
+
+    // Longer array test
     int[] arr3 = {
       1,
       2,

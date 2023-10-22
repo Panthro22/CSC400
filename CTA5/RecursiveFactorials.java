@@ -19,4 +19,5 @@ public class RecursiveFactorials {
       return n * factorialAlternative(n - 1);
     }
   }
+  // Even though the base case is different, the result is the same
 }
