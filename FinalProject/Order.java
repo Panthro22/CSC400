@@ -1,37 +1,58 @@
 package FinalProject;
 
-import java.util.LinkedList;
-import java.util.Queue;
-
 public class Order {
 
-  private Queue<OrderInfo> orderQueue = new LinkedList<>();
+  private CustomQueue<OrderInfo> orderQueue = new CustomQueue<>();
 
-  public void addOrder(String lastName, String orderNumber, double totalCost) {
+  public void addOrder(String lastName, int orderNumber, double totalCost) {
     OrderInfo orderInfo = new OrderInfo(lastName, orderNumber, totalCost);
-    orderQueue.add(orderInfo);
+    this.orderQueue.enqueue(orderInfo);
   }
 
   public void removeOrder() {
     if (!orderQueue.isEmpty()) {
-      orderQueue.poll();
+      this.orderQueue.dequeue();
     } else {
       System.out.println("Order Queue is empty.");
     }
   }
 
-  public Queue<OrderInfo> getOrderQueue() {
-    return orderQueue;
+  public void removeOrderByOrderNumber(int orderNumber) {
+    if (!orderQueue.isEmpty()) {
+      CustomQueue<OrderInfo> tempQueue = new CustomQueue<>();
+      boolean orderFound = false;
+
+      while (!orderQueue.isEmpty()) {
+        OrderInfo orderInfo = orderQueue.dequeue();
+        if (orderInfo.getOrderNumber() == orderNumber) {
+          orderFound = true;
+        } else {
+          tempQueue.enqueue(orderInfo);
+        }
+      }
+
+      if (orderFound) {
+        orderQueue = tempQueue;
+      } else {
+        System.out.println("Order not found.");
+      }
+    } else {
+      System.out.println("Order Queue is empty.");
+    }
+  }
+
+  public CustomQueue<OrderInfo> getOrderQueue() {
+    return this.orderQueue;
   }
 }
 
 class OrderInfo {
 
   private String lastName;
-  private String orderNumber;
+  private int orderNumber;
   private double totalCost;
 
-  public OrderInfo(String lastName, String orderNumber, double totalCost) {
+  public OrderInfo(String lastName, int orderNumber, double totalCost) {
     this.lastName = lastName;
     this.orderNumber = orderNumber;
     this.totalCost = totalCost;
@@ -41,7 +62,7 @@ class OrderInfo {
     return lastName;
   }
 
-  public String getOrderNumber() {
+  public int getOrderNumber() {
     return orderNumber;
   }
 

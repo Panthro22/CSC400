@@ -14,7 +14,8 @@ public class Main {
       System.out.println("1. Add an Order");
       System.out.println("2. Remove an Order");
       System.out.println("3. Display Orders");
-      System.out.println("4. Exit");
+      System.out.println("4. Remove order by order number");
+      System.out.println("5. Exit");
       System.out.print("Enter your choice: ");
       int choice = scanner.nextInt();
 
@@ -26,21 +27,29 @@ public class Main {
           String lastName = validateLastName(scanner);
           System.out.print("Enter Order Number: ");
           // validate order number
-          String orderNumber = validateOrderNumber(scanner);
+          int orderNumber = validateOrderNumber(scanner);
           System.out.print("Enter Total Cost: ");
           // validate total cost
           double totalCost = validateTotalCost(scanner);
           order.addOrder(lastName, orderNumber, totalCost);
           display.updateAndSortArrays(order.getOrderQueue());
+          display.displayOrders();
           break;
         case 2:
           order.removeOrder();
           display.updateAndSortArrays(order.getOrderQueue());
+          display.displayOrders();
           break;
         case 3:
           display.displayOrders();
           break;
         case 4:
+          System.out.print("Enter Order Number: ");
+          int orderNumberToRemove = validateOrderNumber(scanner);
+          order.removeOrderByOrderNumber(orderNumberToRemove);
+          display.updateAndSortArrays(order.getOrderQueue());
+          break;
+        case 5:
           System.out.println("Exiting the program.");
           scanner.close();
           System.exit(0);
@@ -56,20 +65,22 @@ public class Main {
   private static String validateLastName(Scanner scanner) {
     String lastNameCheck = scanner.next();
     while (!lastNameCheck.matches("[a-zA-Z]+")) {
-      System.out.println("Invalid last name. Please enter a valid last name.");
+      System.out.println(
+        "Invalid last name. Please enter a valid last name. Only letters are allowed."
+      );
       lastNameCheck = scanner.next();
     }
     return lastNameCheck;
   }
 
-  // method to validate order number can contain letters, numbers and dashes
-  private static String validateOrderNumber(Scanner scanner) {
-    String orderNumberCheck = scanner.next();
-    while (!orderNumberCheck.matches("[a-zA-Z0-9-]+")) {
+  // method to validate order number which can contain letters, numbers and dashes
+  private static int validateOrderNumber(Scanner scanner) {
+    int orderNumberCheck = scanner.nextInt();
+    while (!String.valueOf(orderNumberCheck).matches("[0-9]+")) {
       System.out.println(
-        "Invalid order number. Please enter a valid order number."
+        "Invalid order number. Please enter a valid order number using only numbers."
       );
-      orderNumberCheck = scanner.next();
+      orderNumberCheck = scanner.nextInt();
     }
     return orderNumberCheck;
   }
@@ -79,7 +90,7 @@ public class Main {
     double totalCostCheck = scanner.nextDouble();
     while (!String.valueOf(totalCostCheck).matches("[0-9]+.[0-9]{1,2}")) {
       System.out.println(
-        "Invalid total cost. Please enter a valid total cost."
+        "Invalid total cost. Please enter a valid total cost. only two decimal places are allowed."
       );
       totalCostCheck = scanner.nextDouble();
     }
